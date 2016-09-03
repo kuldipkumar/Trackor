@@ -1,0 +1,16 @@
+{
+  "name": "MyNode",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "csvtojson": "^1.0.0",
+    "ejs": "*",
+    "express": "3.2.6",
+    "mongodb": "^2.2.5",
+    "mongoose": "^4.5.10",
+    "pg": "^6.0.3"
+  }
+}

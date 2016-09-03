@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html ng-app="leave">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<title>Ticket Details</title>
+		<link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
+		<link rel="stylesheet" href="css/bootstrap.css"/>
+		<link rel="stylesheet" href="css/dcalendar.picker.css"/>
+		<link rel="stylesheet" href="css/app.css"/>
+		<script src="javascript/jquery-1.12.0.min.js"></script>
+		<script src="javascript/dcalendar.picker.js"></script>
+		<script src="javascript/bootstrap.min.js" type="text/javascript"></script>
+		<script src="javascript/angular.min.js"></script>
+		<script src="javascript/tracker.js"></script>
+		<script src="controller/tracker.client.leaveController.js"></script>
+	</head>
+<body ng-controller="leaveController">
+
+<div class="row col-md-12 form-login">
+		<div class="row col-md-12">
+		<nav class="navbar navbar-inverse">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <a class="navbar-brand" href="dashboard.html" onclick="submitForm('dashboard')">DashBaord</a>
+		    </div>
+		    <ul class="nav navbar-nav">
+				<li><a href="leaves.html">Leaves</a></li>
+				<li><a href="tickets.html">Tickets</a></li>
+				<li><a href="resource.html">Profile</a></li>
+				<!-- <li><a href="timesheet.html">TimeSheet</a></li> -->
+		    </ul>
+		    <ul class="nav navbar-nav navbar-right">
+		      <li><a href="logOut.html"><span class="glyphicon glyphicon-log-in"></span> </a></li>
+		    </ul>
+		  </div>
+		</nav>
+		</div>
+	<div class="row col-md-12">
+		<div style="height:20px;"></div>
+	</div>
+
+	<div class="row col-md-12">
+		<div class="col-md-1"><label>Month : </label></div>
+		<div class="col-md-2">
+		 <form action="leaves.html" method="get" modelAttribute="leaveCommand">
+		 	<select name="month" class="form-control input-sm">
+		 		<c:forEach items="${leaveCommand.monthList}" var="months">
+		 			
+	          		<option value="${months}" <c:if test="${months eq leaveCommand.month}"> selected</c:if>>${months}</option>
+	         	</c:forEach>
+		 	</select>
+		 </div>
+		 <div class="col-md-1"><label>Year : </label></div>
+		 <div class="col-md-2">
+		 	<select name="year" class="form-control input-sm">
+		 		<c:forEach items="${leaveCommand.yearList}" var="years">
+		 			
+	          		<option value="${years}" <c:if test="${years eq leaveCommand.year}"> selected </c:if> >${years}</option>
+	         	</c:forEach>
+		 	</select>
+		</div>
+		<div class="col-md-2">
+				<button type="submit" value="btn" class="btn btn-sm btn-info">Go</button>
+	    	</form>
+	    </div>
+	    
+	    <div class="col-md-1">
+			<form action="addLeaves.html" method="post" id="addLeave">
+				<button type="submit" value="btn" class="btn btn-sm btn-info">Apply Leave</button>
+			</form>
+		</div>
+    </div>
+    
+    
+    <table id="myTable" class="table table-bordered table-hover table-condensed">
+		<tbody ng-repeat="leave in leaveData">
+			<tr>
+				   <td>{{leave.name}}</td>
+				   <td>{{leave.leaveDate}}</td>
+				   <td>{{leave.remark}}</td>
+				   <td>{{leave.type}}</td>
+			</tr>
+    	</tbody>
+	</table>
+    
+    <div class="row col-md-8"><div style="height:10px;"></div></div>
+	<div class="row col-md-offset-6 col-md-2"><button type="submit" value="btn" class="btn btn-sm btn-info" onClick="addLeave()">Add</button></div>
+    
+	<div class="row col-md-12">
+		<div style="height:20px;"></div>
+	</div>
+
+	<div class="row col-md-12">
+		<table id="myTable" class="table table-bordered table-hover table-condensed">
+			<thead class="sorting">
+				<tr>
+					<td rowspan="2"> Name</td>
+					<c:forEach var="resourceLeave" items="${leaveCommand.resourceLeaveList}" end="0">
+						<c:forEach var="leave" items="${resourceLeave.leaveDetailList}" >
+	    			 		<td>${leave.dayNumber}</td>
+						</c:forEach>
+					</c:forEach>
+				</tr>
+				<tr>
+					<c:forEach var="resourceLeave" items="${leaveCommand.resourceLeaveList}" end="0">
+						<c:forEach var="leave" items="${resourceLeave.leaveDetailList}" >
+	    			 		<td>${leave.dayName}</td>
+						</c:forEach>
+					</c:forEach>
+				</tr>
+			</thead>
+			<tbody>
+				 <c:forEach items="${leaveCommand.resourceLeaveList}" var="resourceLeave" varStatus="status">
+					<tr>
+						<td>${resourceLeave.resourceName}</td>
+						<c:forEach items="${resourceLeave.leaveDetailList}" var="leave" varStatus="count">
+							<td style="background-color:${leave.color}"></td>
+						</c:forEach>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
+</div>  
+</body>
+</html>

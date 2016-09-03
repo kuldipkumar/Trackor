@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html ng-app="dashboard">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<title>Dashbaord</title>
+		<link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
+		<link rel="stylesheet" href="css/bootstrap.css"/>
+		<link rel="stylesheet" href="css/dcalendar.picker.css"/>
+		<link rel="stylesheet" href="css/app.css"/>
+		<script src="javascript/jquery-1.12.0.min.js"></script>
+		<script src="javascript/dcalendar.picker.js"></script>
+		<script src="javascript/bootstrap.min.js" type="text/javascript"></script>
+		<script src="javascript/angular.min.js"></script>
+		<script src="javascript/tracker.js"></script>
+		<script src="controller/tracker.client.dashboardController.js"></script>
+	</head>
+
+<body ng-controller="displayController">
+
+	<div class="row col-md-12 form-login"><!--most outer-->
+		<div class="row col-md-12">
+		<nav class="navbar navbar-inverse">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <a class="navbar-brand" href="dashboard.html" onclick="submitForm('dashboard')">DashBaord</a>
+		    </div>
+		    <ul class="nav navbar-nav">
+				<li><a href="leaves.html">Leaves</a></li>
+				<li><a href="tickets.html">Tickets</a></li>
+				<li><a href="resource.html">Profile</a></li>
+				<!-- <li><a href="timesheet.html">TimeSheet</a></li> -->
+		    </ul>
+		    <ul class="nav navbar-nav navbar-right">
+		      <li><a href="logOut.html"><span class="glyphicon glyphicon-log-in"></span> </a></li>
+		    </ul>
+		  </div>
+		</nav>
+		</div>
+		<div class="row col-md-12"><!-- Outer row-->
+		
+		<form action="show" method="get">
+			<button type="submit" value="btn" class="btn btn-sm btn-info">SHOW</button>
+		</form>
+
+		
+		
+          	<c:if test="${sessionScope.resource.role eq 'Manager'}">
+          	 <fieldset class="form-group">
+     			<legend>File Upload</legend>
+				<form:form action="uploadExcel.html" modelAttribute="excelCommand" method="post" enctype="multipart/form-data">			
+			        
+			        <div class="row col-md-8"><!-- first row-->
+						<div class="col-md-1"><label>Project</label></div>
+			        	<div class="col-md-2">
+							<select name="project" class="form-control input-sm">
+								<option selected>RTS</option>
+								<option>AbInitio</option>
+							</select>
+						</div>
+						<div class="col-md-1"><label>Date</label></div>
+						<div class="col-md-2">
+						<!-- <input type="type" name="uploadDate" id="mydate" ng-model="mydate | date:'dd/MM/yyyy'" class="form-control input-sm"/></div>-->
+						<input type="type" name="uploadDate" id="mydate" class="form-control input-sm"/></div>
+		        	</div><!--/first row -->
+					
+					<div class="row col-md-8">
+						<div style="height:10px;"></div>
+					</div>
+					
+					<div class="row col-md-8"><!--second row-->
+			          	<div class="col-md-1"><label>File</label></div>
+			          	
+			          	<form id="uploadForm" enctype="multipart/form-data" action= "/upload" method="post">
+			          	
+			          		<div class="col-md-5"><input name="uploadFile" class="form-control input-sm" id="uploadFile" type="file"/></div>
+			        		<div  class="col-md-1"><button value="btn" class="btn btn-sm btn-info">Upload</button></div>
+			          	
+			          		<!-- <input type="file" name="uploadFile" id="uploadFile"/> <input type="submit" value="Upload Excel" name="submit"> -->
+						</form>
+			          	
+			          	
+						<!-- <div class="col-md-5"><input name="fileData" class="form-control input-sm" id="uploadFileId" file-model="uploadfile" type="file"/></div>
+			        	<div  class="col-md-1"><button value="btn" class="btn btn-sm btn-info" ng-click="uploadFile()">Upload</button></div> -->
+					</div><!--/second row-->
+				</form:form>
+				</fieldset>
+			</c:if>
+	  		
+	  		<div class="row col-md-8">
+				<div style="height:10px;"></div>
+			</div>
+					
+	  		<div class="row col-md-12"><!--third row-->
+	  		 <fieldset class="form-group">
+     			<legend>Search</legend>
+		  		<form:form action="myTickets.html" modelAttribute="ticketCommand" method="post">
+			  		<div class="col-md-2">
+						<select name="columnType" id="columnTypeId" class="form-control input-md" multiple>
+							<option selected value="area">Area</option>
+							<option value="asgngroup">Assigned Group</option>
+							<option value="type">Ticket Type</option>
+							<option value="asgnto">Assigned To</option>
+							<option value="status">Status</option>
+							<option value="summary">Summary</option>
+							<option value="remark">Remark</option>
+						</select>
+					</div>
+		  			<div class="col-md-2">
+						<input type="text" name="columnValue" id="columnValueId" class="form-control input-md" placeholder="Search Text" value="">
+					</div>
+					<!-- <div class="col-md-1"><label>End Date</label></div> -->
+					<div class="col-md-1"><input type="text" name="endDateValue" id="endDateValueId" class="form-control input-md" placeholder="End Date"></div>
+					<div class="col-md-1">
+						<button type="submit" value="btn" class="btn btn-sm btn-info">Search</button>
+					</div>
+		  		</form:form>
+		  		</fieldset>
+	  		</div>
+	  		
+	  		
+	  		<div class="row col-md-12">
+				<div style="height:20px;"></div>
+			</div>
+	  		<div class="row col-md-12 workLoad" style="height:200px;overflow-y:scroll;">
+	  		 <fieldset class="form-group">
+     			<legend>Work Load</legend>
+	  			<form:form action="myTickets.html" modelAttribute="ticketCommand" method="post" id="workLoadForm">
+		  		<table id="workLoadTable" class="table table-bordered table-hover table-condensed">
+					<thead class="sorting">
+						<tr>
+							<td><label>Name</label></td>
+							<td><label>Total</label></td>
+							<td><label>INC</label></td>
+							<td><label>PRB</label></td>
+							<td><label>Work</label></td>
+							<td><label>PR</label></td>
+							<td><label>CR</label></td>
+							<td><label>TN</label></td>
+							<td><label>RN</label></td>
+						</tr>
+					</thead>
+					<tbody>
+					<c:forEach items="${model.workLoad}" var="workLoad">
+					<tr>
+					   <td onclick="getTicketForResource('${workLoad.resoruceName}');" style="cursor:pointer;text-decoration: underline;color:#00C5CD;">${workLoad.resoruceName}</td>
+					    <input type="hidden" name="columnType" value="asgnto" />
+					   <input type="hidden" name="columnValue" value="" id="resourceName"/>
+					   <td>${workLoad.totalCount}</td>
+					   <td>${workLoad.incidentCount}</td>
+					   <td>${workLoad.problemCount}</td>
+					   <td>${workLoad.workItemCount}</td>
+					   <td>${workLoad.infoNotesPRCount}</td>
+					   <td>${workLoad.infoNotesCRCount}</td>
+					   <td>${workLoad.testNotesCount}</td>
+					   <td>${workLoad.requestNoteCount}</td>
+					</tr>
+					</c:forEach>
+					</tbody>
+				</table>
+				</form:form>
+				</fieldset>
+			</div>
+          
+			<div class="row col-md-12">
+				<div style="height:40px;"></div>
+			</div>
+			
+			<div class="row col-md-12 workLoad" style="height:120px;">
+			<div class="col-md-12">
+		  		<form:form action="createWorkItem.html" modelAttribute="ticket" method="post" id="createWorkItem">
+					<table id="workItemTable" class="table table-bordered table-hover table-condensed">
+						<thead class="sorting">
+							<tr>
+								<td><label>Summary</label></td>
+								<td><label>Priority</label></td>
+								<td><label>Area*</label></td>
+								<td><label>Group</label></td>
+								<td><label>AssignedTo*</label></td>
+								<td><label>Comment</label></td>
+								<td><label>Deadline</label></td>
+								<td></td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="text" name="summary" class="form-control input-sm" value=""/></td>
+								<td><input type="text" name="priority" class="form-control input-sm" value=""/></td>
+								<td><input type="text" name="area" class="form-control input-sm" value=""/></td>
+								<td><input type="text" name="assignmentGroup" class="form-control input-sm" value=""/></td>
+								<td><input type="text" name="assignedTo" class="form-control input-sm" value=""/></td>
+							   	<td><textarea name="remark" class="textAreaClass form-control input-sm" rows="1" value=""></textarea></td>
+							   	<td><input type="text" name="endDate" class="dateInputClass form-control input-sm"  value=""/></td>
+							   	<td><button type="submit" value="btn" class="btn btn-sm btn-info">Save</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			
+			</div><!-- end Row -->
+			</form:form>
+			
+			<div class="row col-md-12">
+				<div style="height:40px;"></div>
+			</div>
+			
+		<div class="row col-md-12">	
+			<table id="ticketTrend" class="highchart" data-graph-container="highchart-container" data-graph-type="column">
+					<thead class="sorting">
+						<tr>
+							<th><label>Date</label></th>
+							<th><label>Tickets</label></th>
+						</tr>
+					</thead>
+					<tbody>
+					<c:forEach items="${model.ticketTrend}" var="ticketCountMap">
+					<tr>
+					   <td>${ticketCountMap.key}</td>
+					   <td>${ticketCountMap.value}</td>
+					</tr>
+					</c:forEach>
+					</tbody>
+				</table>
+		</div>
+			
+      </div><!-- most outer -->
+</body>
+</body>
+</html>

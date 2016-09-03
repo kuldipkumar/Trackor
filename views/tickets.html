@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html ng-app="ticket">
+	<head>
+		<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<title>Ticket Details</title>
+		<link rel="stylesheet" href="css/bootstrap-theme.min.css"/>
+		<link rel="stylesheet" href="css/bootstrap.css"/>
+		<link rel="stylesheet" href="css/dcalendar.picker.css"/>
+		<link rel="stylesheet" href="css/app.css"/>
+		<script src="javascript/jquery-1.12.0.min.js"></script>
+		<script src="javascript/dcalendar.picker.js"></script>
+		<script src="javascript/bootstrap.min.js" type="text/javascript"></script>
+		<script src="javascript/angular.min.js"></script>
+		<script src="javascript/tracker.js"></script>
+		<script src="controller/tracker.client.ticketController.js"></script>
+		
+	</head>
+</head>
+<body ng-controller="mainController">
+
+<div class="row col-md-12 form-login" style="height:750px;">
+<div class="row col-md-12">
+		<nav class="navbar navbar-inverse">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <a class="navbar-brand" href="dashboard.html" onclick="submitForm('dashboard')">DashBaord</a>
+		    </div>
+		    <ul class="nav navbar-nav">
+				<li><a href="leaves.html">Leaves</a></li>
+				<li><a href="tickets.html">Tickets</a></li>
+				<li><a href="resource.html">Profile</a></li>
+				<!-- <li><a href="timesheet.html">TimeSheet</a></li> -->
+		    </ul>
+		    <ul class="nav navbar-nav navbar-right">
+		      <li><a href="logOut.html"><span class="glyphicon glyphicon-log-in"></span> </a></li>
+		    </ul>
+		  </div>
+		</nav>
+		</div>
+<input type="text" name="endDateValue" class="dateInputClass form-control input-md" placeholder="End Date">
+<div class="row col-md-12" style="height:600px; overflow-y:scroll;">
+<form method="post" ng-submit="updateTicket()">
+<button type="submit" value="btn" class="btn btn-sm btn-info">Update</button>
+<table id="myTable" class="table table-bordered table-hover table-condensed">
+	<thead class="sorting">
+		<tr>
+			<td><label>Number</label></td>
+			<td><label>Summary</label></td>
+			<td><label>Status</label></td>
+			<td><label>Priority</label></td>
+			<td><label>Area</label></td>
+			<td><label>Group</label></td>
+			<td><label>Resource</label></td>
+			<td><label>Comment</label></td>
+			<td><label>Deadline</label></td>
+			<td><label>Ageing</label></td>
+			<td><label>Update</label></td>
+		</tr>
+	</thead>
+	<tbody ng-repeat="ticket in ticketData">
+		<tr>
+			<input type="hidden" name="ticket._id" ng-model="ticket._id"/>
+		   	<td><a href="#" target=_blank>{{ticket.Number}}</a></td>
+		   	<td>{{ticket.Summary}}</td>
+		   	<td>{{ticket.Status}}</td>
+		   	<td>{{ticket.Priority}}</td>
+		   	<td>{{ticket.Area}}</td>
+		   	<td>{{ticket.AssignmentGrp}}</td>
+		   	<td>{{ticket.AssignedTo}}</td>
+		   	<td><input type="text" name="ticket.Remark" ng-model="ticket.Remark" class="form-control input-md"/></td>
+		   	<td><input type="text" name="ticket.DeadLineDate" ng-model="ticket.DeadLineDate" id="endDateValueId" class="form-control input-xs" placeholder="YYYY-MM-DD"/></td>
+		   	<td>{{ticket.Ageing}}</td>
+		   	<td>{{ticket.Update}}</td>
+		</tr>
+	</tbody>
+</table>
+	
+</form>	
+</div>
+
+
+</div>  
+</body>
+</html>
