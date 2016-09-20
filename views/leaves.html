@@ -23,14 +23,14 @@
 				 $("#dataDiv").hide();
 				  $("#addresource").hide();
 				  $("#updateResource").show();
-				
+
 			}
 		</script>
 	</head>
 <body ng-controller="leaveController">
 
 	<div class="row col-md-12 form-login">
-	
+
 		<div class="row col-md-12">
 		<nav class="navbar navbar-inverse">
 		  <div class="container-fluid">
@@ -49,104 +49,154 @@
 		  </div>
 		</nav>
 		</div>
-		
-		<div class="row col-md-12" id="dataDiv">
 
+
+		<div class="row col-md-12">
+			<form method="get" ng-submit="loadLeave()">
+			<div class="col-md-1"><label>Month : </label></div>
+			<div class="col-md-2">
+		 		<select name="month" class="form-control input-sm" ng-model="yearMonth.month">
+	          		<option  ng-selected="{{month == presentMonth}}" value="{{$index}}" selected ng-repeat="month in monthData">{{month}}</option>
+		 		</select>
+		 	</div>
+		 	<div class="col-md-1"><label>Year : </label></div>
+		 	<div class="col-md-2">
+		 		<select name="year" class="form-control input-sm" ng-model="yearMonth.year">
+		 			<option ng-selected="{{year == presentYear}}" value="{{year}}" selected ng-repeat="year in yearData">{{year}}</option>
+		 		</select>
+			</div>
+			<div class="col-md-2">
+				<button type="submit" value="btn" class="btn btn-sm btn-info">Go</button>
+	    	</div>
+			
+			<div class="col-md-4">
+				<table class="table table-bordered table-hover table-condensed">
+					<thead>
+						<tr>
+							<td bgcolor="GREY" style="font-weight:bold;color:white">Week End</td>
+							<td bgcolor="GREEN" style="font-weight:bold;color:white">Today</td>
+							<td bgcolor="#C0DEED" style="font-weight:bold;color:white">Personal Leave</td>
+							<td bgcolor="ORANGE" style="font-weight:bold;color:white">Location Leave</td>
+						</tr>
+					</thead>
+				</table>
+	    	</div>
+			
+	    	</form>
+		</div>
+
+		<div class="row col-md-12">
+				<div style="height:20px;"></div>
+		</div>
+
+		<div class="row col-md-12">
 		<table id="myTable" class="table table-bordered table-hover table-condensed">
-		<!-- <table id="myTable" class="ui celled table"> -->
-		
 			<thead class="sorting">
 				<tr>
-					<td><label>Name</label></td>
-					<td><label>Leave Date</label></td>
-					<td><label>Remark</label></td>
-					<td><label>Type</label></td>
+					<td rowspan="2"> Name</td>
+	    			<td ng-repeat="leave in resourceAndLeave[0].leave">{{leave.dayNo}}</td>
 				</tr>
 			</thead>
-			<tbody ng-repeat="leave in leaveData">
-					<tr>
-						   <td><a href="#" onClick="updateProfile()" ng-click="fetchOneResource(resource)">{{leave.name}}</a></td>
-						    <td>{{leave.leaveDate}}</td>
-						   <td>{{leave.remark}}</td>
-						   <td>{{leave.type}}</td>
+			<tbody>
+					<tr ng-repeat="rleave in resourceAndLeave">
+						<td>{{rleave.resource}}</td>
+						<td ng-repeat="leave in rleave.leave" bgcolor="{{leave.colorName}}"></td>
 					</tr>
 			</tbody>
 		</table>
+	</div>
+	<style>
+	.bgGREY{
+		background-color: "GREY";
+	}
+	.bgBLUE{
+		background-color: "BLUE";
+	}
+	.bgRED{
+		background-color: "RED";
+	}
+	.bgGREEN{
+		background-color: "GREEN";
+	}
+	</style>
+
+
+
+
+		<div class="row col-md-12" id="dataDiv">
+
 			<div class="row col-md-8"><div style="height:10px;"></div></div>
 			<div class="row col-md-offset-6 col-md-2"><button type="submit" value="btn" class="btn btn-sm btn-info" onClick="addLeave()">Add</button></div>
 		</div>
-		
+
 		<div class="row col-md-8" id="addresource" style="display:none">
 			<form:form action="saveLeave.html" method="post">
-			
+
 			<div class="row col-md-8"><label>Name: </label><input type="text" id="name" ng-model="addLeave.name" class="form-control input-sm"/></div>
-	        <div class="row col-md-8"><div style="height:10px;"></div></div> 
-			
-			<div class="row col-md-8"><label>Lave Date: </label><input type="text" id="leaveDate" ng-model="addLeave.leaveDate" class="form-control input-sm"/></div>
+	        <div class="row col-md-8"><div style="height:10px;"></div></div>
+
+			<div class="row col-md-8"><label>Lave Date: </label><input type="text" class="addleaveDate" ng-model="addLeave.leaveDate" value="" class="form-control input-sm" placeholder="yyyy-mm-dd"/></div>
 			<div class="row col-md-8"><div style="height:10px;"></div></div>
 			<div class="row col-md-8"><label>Remark: </label><input type="text" id="remark" ng-model="addLeave.remark"  class="form-control input-sm"/></div>
-	        <div class="row col-md-8"><div style="height:10px;"></div></div> 
-	        
-	        <div class="row col-md-8"><label>Type:</label><input type="text" id="type" ng-model="addLeave.type" class="form-control input-sm"/></div>
 	        <div class="row col-md-8"><div style="height:10px;"></div></div>
-	        
+
 	        <div class="row col-md-offset-6 col-md-2"><button type="submit" value="btn" class="btn btn-sm btn-info" ng-click="saveLeave()">Save</button></div>
 	        <div class="row col-md-8"><div style="height:40px;"></div></div>
 	       </form:form>
 	     </div>
-	     
-	     
-	     
+
+
+
 	     <div class="row col-md-12" id="updateResource" style="display:none">
 			<form:form action="updateProfile.html" method="post">
-			
+
 			<div class="form-group"><label for="ibmid" class="col-sm-2 control-label">IBM Id:</label>
 			<div class="col-sm-4"><input type="text" id="ibmid" ng-model="resource.ibmid" class="form-control input-sm"/></div></div>
 	        <div class="col-md-12"><div style="height:10px;"></div></div>
-	        
+
 	        <div class="form-group"><label for="name" class="col-sm-2 control-label">Name:</label>
 			<div class="col-sm-4"><input type="text" id="name" ng-model="resource.name" class="form-control input-sm"/></div></div>
-	        <div class="col-md-12"><div style="height:10px;"></div></div> 
-	        
+	        <div class="col-md-12"><div style="height:10px;"></div></div>
+
 	        <div class="form-group"><label for="phonenumber" class="col-sm-2 control-label">Phone Number:</label>
 			<div class="col-sm-4"><input type="text" id="phonenumber" ng-model="resource.phonenumber" class="form-control input-sm"/></div></div>
-	        <div class="col-md-12"><div style="height:10px;"></div></div> 
-	        
+	        <div class="col-md-12"><div style="height:10px;"></div></div>
+
 	        <div class="form-group"><label for="ibmEmailId" class="col-sm-2 control-label">IBM Email:</label>
 			<div class="col-sm-4"><input type="text" id="ibmEmailId" ng-model="resource.ibmEmailId" class="form-control input-sm"/></div></div>
 	        <div class="col-md-12"><div style="height:10px;"></div></div>
-	        
+
 	        <div class="form-group"><label for="hondaId" class="col-sm-2 control-label">Honda:</label>
 			<div class="col-sm-4"><input type="text" id="hondaId" ng-model="resource.hondaId" class="form-control input-sm"/></div></div>
 	        <div class="col-md-12"><div style="height:10px;"></div></div>
-	        
+
 	        <div class="form-group"><label for="hondaEmailId" class="col-sm-2 control-label">Honda Email:</label>
 			<div class="col-sm-4"><input type="text" id="hondaEmailId" ng-model="resource.hondaEmailId" class="form-control input-sm"/></div></div>
-	        <div class="col-md-12"><div style="height:10px;"></div></div> 
-			
+	        <div class="col-md-12"><div style="height:10px;"></div></div>
+
 			<div class="form-group"><label for="location" class="col-sm-2 control-label">Location:</label>
 			<div class="col-sm-4"><input type="text" id="location" ng-model="resource.location" class="form-control input-sm"/></div></div>
 	        <div class="col-md-12"><div style="height:10px;"></div></div>
-			
+
 	        <div class="form-group"><label for="manager" class="col-sm-2 control-label">Manager:</label>
 			<div class="col-sm-4"><input type="text" id="manager" ng-model="resource.manager" class="form-control input-sm"/></div></div>
 	        <div class="col-md-12"><div style="height:10px;"></div></div>
-	        
+
 	        <div class="form-group"><label for="project" class="col-sm-2 control-label">Project:</label>
 			<div class="col-sm-4"><input type="text" id="project" ng-model="resource.project" class="form-control input-sm"/></div></div>
 	        <div class="col-md-12"><div style="height:10px;"></div></div>
-	        
+
 	        <div class="form-group"><label for="password" class="col-sm-2 control-label">Password:</label>
 			<div class="col-sm-4"><input type="password" id="password" ng-model="resource.password" class="form-control input-sm"/></div></div>
 	        <div class="col-md-12"><div style="height:10px;"></div></div>
-	        
+
 	        <div class="row col-md-offset-6 col-md-2"><button type="submit" value="btn" class="btn btn-sm btn-info" ng-click="updateResource()">Update</button></div>
 	        <div class="row col-md-8"><div style="height:40px;"></div></div>
 	       </form:form>
 	     </div>
-	     
-	     
-	     
-	</div>            	
+
+
+
+	</div>
 </body>
 </html>
