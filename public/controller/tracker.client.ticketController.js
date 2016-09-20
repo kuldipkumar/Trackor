@@ -10,8 +10,8 @@ angular.module('ticket', [])
     $http.get('/tickets')
         .success(function(data) {
             var results = [];
-            
-            var today = new Date();//.getDate();
+            var today = new Date();
+			var data = data.docs;
             for (i=0;i<data.length;i++){
             	var item = [];
             	item.id 			=	data[i]._id;
@@ -27,11 +27,11 @@ angular.module('ticket', [])
             	item.DeadLineDate 	=	nodeToJSDate(data[i].DeadLineDate);
             	item.Ageing			=	dateDiffInDays(data[i].CreatedOn, new Date());//dateDiffInDays(today,data[i].CreatedOn.getDate());
             	item.Update     	=   dateDiffInDays(data[i].UpdatedOn, new Date());//dateDiffInDays(today,data[i].UpdatedOn.getDate());
-            	results.push(item);
+				results.push(item);
             }
-            
-            $http.get('/area').success(function(data){
+			$http.get('/area').success(function(data){
             	var area = [];
+				var data = data.docs;
             	for(i=0;i<data.length;i++){
             		var entry = [];
             		entry.Area = data[i].Area;
@@ -63,6 +63,7 @@ angular.module('ticket', [])
     $scope.updateTicket = function() {
     	var appData = $scope.ticketData;
     	var formDataList = [];
+		console.log("Inside update");
     	for(i=0;i<appData.length;i++){
 			var item = {
 					id:appData[i].id, 
@@ -73,6 +74,7 @@ angular.module('ticket', [])
     	}
        $http.post('/updateTicket',{updateData: formDataList})
             .success(function(data) {
+				console.log("After save")
             	$http.get('/tickets');
             })
             .error(function(data) {
@@ -105,8 +107,6 @@ angular.module('ticket', [])
    }
    
    function setArea(results,area){
-	   console.log(area);
-	   console.log(results);
 	   for(i=0;i<results.length;i++){
 		   for(j=0;j<area.length;j++){
 			   if(results[i].AssignmentGrp==area[j].AssignmentGrp){
@@ -120,6 +120,3 @@ angular.module('ticket', [])
    }
     
 });
-
-
-
