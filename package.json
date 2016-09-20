@@ -1,16 +1,18 @@
 {
-  "name": "MyNode",
+  "name": "Trackor",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node app.js"
   },
   "dependencies": {
-    "csvtojson": "^1.0.0",
-    "ejs": "*",
-    "express": "3.2.6",
-    "mongodb": "^2.2.5",
-    "mongoose": "^4.5.10",
-    "pg": "^6.0.3"
+    "cloudant": "^1.4.3",
+    "ejs": "^2.5.2",
+    "express": "^3.2.6",
+    "fs": "0.0.1-security",
+    "http": "0.0.0",
+    "path": "^0.12.7",
+    "routes": "^2.1.0",
+    "xlsx": "^0.8.0"
   }
 }
