@@ -72,6 +72,7 @@
 			</thead>
 			<tbody ng-repeat="resource in resourceData">
 					<tr>
+						   <input type="hidden" value={{resource._id}}/>
 						   <td><a href="#" onClick="updateProfile()" ng-click="fetchOneResource(resource)">{{resource.ibmid}}</a></td>
 						    <td>{{resource.name}}</td>
 						   <td>{{resource.phonenumber}}</td>
@@ -123,6 +124,9 @@
 	        <div class="row col-md-8"><div style="height:10px;"></div></div> 
 	        
 	        <div class="row col-md-8"><label>Password:</label><input type="password" id="password" ng-model="addResource.password" class="form-control input-sm"/></div>
+	        <div class="row col-md-8"><div style="height:10px;"></div></div>
+			
+			 <div class="row col-md-8"><label>Start Date:</label><input type="text" id="startDate" ng-model="addResource.startDate" class="form-control input-sm"/></div>
 	        <div class="row col-md-8"><div style="height:10px;"></div></div>
 	        
 	        <!-- <div class="row col-md-8"><label>Start Date:</label><input type="text" id="startDate" ng-model="addResource.startDate" class="form-control input-sm"/></div>
