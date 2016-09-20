@@ -9,7 +9,7 @@ angular.module('resource', [])
 
     $http.get('/resource')
         .success(function(data) {
-        	$scope.resourceData = data;
+        	$scope.resourceData = data.docs;
         })
         .error(function(error) {
             console.log('Error: ' + error);
@@ -51,6 +51,3 @@ angular.module('resource', [])
 	}//end save
     
   });
-
-
-
